@@ -75,6 +75,14 @@ resources:
         AlertQueue:
             Type: AWS::SQS::Queue
             Properties:
+                # Specifies the duration, in seconds, that the ReceiveMessage action call waits,
+                # until a message is in the queue in order to include it in the response,
+                # rather than returning an empty response if a message isn't yet available.
+                # You can specify an integer from 1 to 20.
+                # Short polling is used as the default or when you specify 0 for this property.
+                # Setting long polling will prevent hammering the API with requests,
+                # exhausting the SQS free-tier.
+                ReceiveMessageWaitTimeSeconds: 5
                 RedrivePolicy:
                     maxReceiveCount: 3 # jobs will be retried up to 3 times
                     # Failed jobs (after the retries) will be moved to the other queue for storage
